@@ -16,3 +16,11 @@ SSD1306::SSD1306(i2c_inst_t *i2c, uint8_t sda_pin, uint8_t scl_pin, uint8_t i2c_
     gpio_pull_up(this->sda_pin);
     gpio_pull_up(this->scl_pin);
 }
+
+
+
+void SSD1306::write(uint8_t *buffer, int length)
+{
+    // 100ms limit.
+    int result = i2c_write_timeout_us(this->i2c, this->i2c_address, buffer, length, false, 100000);
+}
