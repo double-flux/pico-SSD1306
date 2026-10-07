@@ -20,4 +20,5 @@ private:
     // Extra byte at the start for the control byte that gets sent each time (0x40).
     uint8_t framebuffer[1025];
     void write(uint8_t *buffer, int length);
+    void screen_init();
 };
