@@ -18,6 +18,12 @@ public:
 
     // Transfer the local framebuffer to the OLED device.
     void render();
+
+    // Clear the whole framebuffer.
+    void clear();
+
+    // Fill the whole framebuffer.
+    void fill();
 private:
     i2c_inst_t *i2c;
     uint8_t sda_pin;

@@ -1,5 +1,6 @@
 #include "SSD1306.h"
 #include "pico/stdlib.h"
+#include <cstring>
 
 
 
@@ -99,6 +100,22 @@ void SSD1306::render()
 
     // Transfer the framebuffer.
     this->write(this->framebuffer, sizeof(this->framebuffer));
+}
+
+
+
+void SSD1306::clear()
+{
+    memset(this->framebuffer + 1, 0, 1024);
+    this->framebuffer[0] = 0x40;
+}
+
+
+
+void SSD1306::fill()
+{
+    memset(this->framebuffer + 1, 0xff, 1024);
+    this->framebuffer[0] = 0x40;
 }
 
 
