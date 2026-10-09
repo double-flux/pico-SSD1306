@@ -16,6 +16,8 @@ public:
     static const uint8_t SCREEN_WIDTH = 128;
     static const uint8_t SCREEN_HEIGHT = 64;
 
+    // Transfer the local framebuffer to the OLED device.
+    void render();
 private:
     i2c_inst_t *i2c;
     uint8_t sda_pin;

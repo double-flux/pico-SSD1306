@@ -77,3 +77,28 @@ void SSD1306::screen_init()
 
     this->write(params, sizeof(params));
 }
+
+
+
+void SSD1306::render()
+{
+    uint8_t buff[4];
+    buff[0] = 0;
+
+    // Set the column addresses.
+    buff[1] = 0x21;
+    buff[2] = 0; // Start at column 0.
+    buff[3] = SSD1306::SCREEN_WIDTH - 1; // End at column 127
+    this->write(buff, 4);
+
+    // Set the page addresses.
+    buff[1] = 0x22;
+    buff[2] = 0; // Start at page 0.
+    buff[3] = SSD1306::SCREEN_HEIGHT - 1; // End zt page 7.
+    this->write(buff, 4);
+
+    // Transfer the framebuffer.
+    this->write(this->framebuffer, sizeof(this->framebuffer));
+}
+
+
