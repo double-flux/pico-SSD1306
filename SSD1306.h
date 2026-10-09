@@ -1,4 +1,5 @@
 #include "hardware/i2c.h"
+#include <string>
 
 
 
@@ -7,6 +8,10 @@ class SSD1306
 public:
     SSD1306(i2c_inst_t *i2c, uint8_t sda_pin, uint8_t scl_pin, uint8_t i2c_address);
 
+    // Chip specific constructors.
+    // Valid options are:
+    // 'piicodev-ssd1306'
+    SSD1306(const std::string &chip_name);
 
     static const uint8_t SCREEN_WIDTH = 128;
     static const uint8_t SCREEN_HEIGHT = 64;

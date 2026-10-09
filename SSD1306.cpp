@@ -22,6 +22,28 @@ SSD1306::SSD1306(i2c_inst_t *i2c, uint8_t sda_pin, uint8_t scl_pin, uint8_t i2c_
 
 
 
+SSD1306::SSD1306(const std::string &chip_name)
+{
+    if (chip_name == "piicodev-ssd1306")
+    {
+        this->i2c = i2c0;
+        this->sda_pin = 4;
+        this->scl_pin = 5;
+        this->i2c_address = 0x3c;
+
+        i2c_init(this->i2c, 400 * 1000);
+        gpio_set_function(this->sda_pin, GPIO_FUNC_I2C);
+        gpio_set_function(this->scl_pin, GPIO_FUNC_I2C);
+        gpio_pull_up(this->sda_pin);
+        gpio_pull_up(this->scl_pin);
+    }
+
+    sleep_ms(500);
+    this->screen_init();
+}
+
+
+
 void SSD1306::write(uint8_t *buffer, int length)
 {
     // 100ms limit.
