@@ -119,3 +119,103 @@ void SSD1306::fill()
 }
 
 
+
+void SSD1306::write_char(char ch, int x_pos, int y_pos) {
+    // Get the position of the supplied character in the data array.
+    int arr_pos = (ch - 32);
+
+    // Default to space if the character isn't within the array.
+    if (arr_pos < 0 || arr_pos > 94)
+    {
+        arr_pos = 0;
+    }
+
+    // Each character takes 6 bytes of data.
+    arr_pos *= 6;
+
+    // Convert the text coordinates to screen coordinates.
+    int column = x_pos * 6;
+    int page = y_pos;
+
+    for (int i = 0; i < 6; i++)
+    {
+        this->framebuffer[1 + column + i + page * SSD1306::SCREEN_WIDTH] = SSD1306::FONT_6X8[arr_pos + i];
+    }
+}
+
+
+
+void SSD1306::write_char_large(char ch, int x_pos, int y_pos) {
+    // Get the position of the supplied character in the data array.
+    int arr_pos = (ch - 32);
+
+    // Default to space if the character isn't within the array.
+    if (arr_pos < 0 || arr_pos > 94)
+    {
+        arr_pos = 0;
+    }
+
+    // Each character takes 24 bytes of data.
+    arr_pos *= 24;
+
+    // Convert the text coordinates to screen coordinates.
+    int column = x_pos * 12;
+    int page = y_pos * 2;
+
+    // The first 12 bytes is the top page for the font.
+    for (int i = 0; i < 12; i++)
+    {
+        this->framebuffer[1 + column + i + page * SSD1306::SCREEN_WIDTH] = SSD1306::FONT_12X16[arr_pos + i];
+    }
+
+    // The next 12 is the bottom page.
+    for (int i = 0; i < 12; i++)
+    {
+        this->framebuffer[1 + column + i + (page + 1) * SSD1306::SCREEN_WIDTH] = SSD1306::FONT_12X16[arr_pos + i + 12];
+    }
+}
+
+
+
+void SSD1306::write_str(std::string str, int x_pos, int y_pos)
+{
+    for (int i = 0; i < str.length(); i++)
+    {
+        // Don't draw anything off the start of the screen.
+        if (x_pos + i < 0)
+        {
+            continue;
+        }
+
+        // Stop writing completely if we are past the end.
+        if (x_pos + i > 20)
+        {
+            break;
+        }
+
+        this->write_char(str[i], x_pos + i, y_pos);
+    }
+}
+
+
+
+
+void SSD1306::write_str_large(std::string str, int x_pos, int y_pos)
+{
+    for (int i = 0; i < str.length(); i++)
+    {
+        // Don't draw anything off the start of the screen.
+        if (x_pos + i < 0)
+        {
+            continue;
+        }
+
+        // Stop writing completely if we are past the end.
+        if (x_pos + i > 9)
+        {
+            break;
+        }
+
+        this->write_char_large(str[i], x_pos + i, y_pos);
+    }
+}

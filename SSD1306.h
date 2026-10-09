@@ -24,6 +24,14 @@ public:
 
     // Fill the whole framebuffer.
     void fill();
+
+    // Write the string to the buffer using 6*8 font.
+    // Coordinates are text coordinates {0-20, 0-7}, not pixel coordinates.
+    void write_str(std::string str, int x_pos, int y_pos);
+
+    // Write the string to the buffer using large 12*16 font.
+    // Coordinates are text coordinates {0-9, 0-3}, not pixel coordinates.
+    void write_str_large(std::string str, int x_pos, int y_pos);
 private:
     i2c_inst_t *i2c;
     uint8_t sda_pin;
@@ -34,6 +42,10 @@ private:
     uint8_t framebuffer[1025];
     void write(uint8_t *buffer, int length);
     void screen_init();
+
+    // Helper functions for writing strings.
+    void write_char(char ch, int x_pos, int y_pos);
+    void write_char_large(char ch, int x_pos, int y_pos);
 
     // 6*8 raster font.
     inline static const uint8_t FONT_6X8[95*6] = {
